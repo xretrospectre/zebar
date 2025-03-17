@@ -123,12 +123,25 @@ pub async fn call_provider_function(
 /// all normal windows (but not the MacOS menu bar). The following instead
 /// sets the z-order of the window to be above the menu bar.
 #[tauri::command]
-pub fn set_always_on_top(window: Window) -> anyhow::Result<(), String> {
+pub fn set_always_on_top(
+  window: Window,
+  always_on_top: bool,
+) -> anyhow::Result<(), String> {
   #[cfg(target_os = "macos")]
   let res = window.set_above_menu_bar();
 
   #[cfg(not(target_os = "macos"))]
-  let res = window.set_always_on_top(true);
+  let res = window.set_always_on_top(always_on_top);
+
+  res.map_err(|err| err.to_string())
+}
+
+#[tauri::command]
+pub fn set_always_on_bottom(
+  window: Window,
+  always_on_bottom: bool,
+) -> anyhow::Result<(), String> {
+  let res = window.set_always_on_bottom(always_on_bottom);
 
   res.map_err(|err| err.to_string())
 }

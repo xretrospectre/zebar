@@ -331,6 +331,17 @@ impl WidgetFactory {
         .window()
         .set_tool_window(!widget_config.shown_in_taskbar);
 
+      // setting either always_on_top or always_on_bottom
+      // may implicity affect the other (OS specific?) so they
+      // must be set exclusively.
+      let _ = match widget_config.z_order {
+        crate::config::ZOrder::TopMost => window.set_always_on_top(true),
+        crate::config::ZOrder::BottomMost => {
+          window.set_always_on_bottom(true)
+        }
+        _ => Ok(()), // neither flag set — default (normal) stacking
+      };
+
       // On MacOS, we need to set the window as above the menu bar for it
       // to truly be always on top.
       #[cfg(target_os = "macos")]
