@@ -16,6 +16,7 @@ export const desktopCommands = {
   unlistenProvider,
   callProviderFunction,
   setAlwaysOnTop,
+  setAlwaysOnBottom,
   setSkipTaskbar,
   shellExec,
   shellSpawn,
@@ -100,8 +101,12 @@ function callProviderFunction(
   });
 }
 
-function setAlwaysOnTop(): Promise<void> {
-  return invoke<void>('set_always_on_top');
+function setAlwaysOnTop(alwaysOnTop?: boolean): Promise<void> {
+  return invoke<void>('set_always_on_top', { alwaysOnTop });
+}
+
+function setAlwaysOnBottom(alwaysOnBottom?: boolean): Promise<void> {
+  return invoke<void>('set_always_on_bottom', { alwaysOnBottom });
 }
 
 function setSkipTaskbar(skip: boolean): Promise<void> {

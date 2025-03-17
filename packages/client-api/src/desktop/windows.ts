@@ -28,12 +28,18 @@ export function currentWindow(): WidgetWindow {
   };
 }
 
+/**
+ * Sets (and unsets) the z-order flags of the window.
+ */
 async function setZOrder(zOrder: ZOrder) {
   if (zOrder === 'bottom_most') {
-    await getCurrentWindow().setAlwaysOnBottom(true);
+    await desktopCommands.setAlwaysOnTop(false);
+    await desktopCommands.setAlwaysOnBottom(true);
   } else if (zOrder === 'top_most') {
-    await desktopCommands.setAlwaysOnTop();
+    await desktopCommands.setAlwaysOnBottom(false);
+    await desktopCommands.setAlwaysOnTop(true);
   } else {
-    await getCurrentWindow().setAlwaysOnTop(false);
+    await desktopCommands.setAlwaysOnTop(false);
+    await desktopCommands.setAlwaysOnBottom(false);
   }
 }
